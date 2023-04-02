@@ -37,6 +37,15 @@ function iniciarApp() {
   }
 
   function mostrarReceta(recetas = []) {
+
+    limpiarHTML(resultado);
+
+    // Mostrando información si existe algún resultado en la API
+    const heading = document.createElement('H2');
+    heading.classList.add("text-center", "text-black", "my-5");
+    heading.textContent = recetas.length ? "Resultados" : "No hay Resultados";
+    resultado.appendChild(heading);
+
     // Iterar en los resultados
     recetas.forEach(receta => {
       const { idMeal, strMeal, strMealThumb } = receta;
@@ -71,8 +80,15 @@ function iniciarApp() {
       recetaCard.appendChild(recetaCardBody);
 
       recetaContenedor.appendChild(recetaCard);
+
       resultado.appendChild(recetaContenedor);
     })
+  }
+
+  function limpiarHTML(selector) {
+    while (selector.firstChild) {
+      selector.removeChild(selector.firstChild);
+    }
   }
 }
 
