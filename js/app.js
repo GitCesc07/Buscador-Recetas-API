@@ -99,9 +99,6 @@ function iniciarApp() {
   }
 
   function mostrarRecetaModal(receta) {
-
-    console.log(receta);
-
     const { idMeal, strInstructions, strMeal, strMealThumb } = receta;
 
     // Añadir contenido al modal
@@ -142,7 +139,25 @@ function iniciarApp() {
     // Botones de cerrar y guardar favoritos
     const btnFavorito = document.createElement("BUTTON");
     btnFavorito.classList.add("btn", "btn-danger", "col");
-    btnFavorito.textContent = "Guardar favorito";
+    btnFavorito.textContent = existeStorage(idMeal) ? "Eliminar Favorito" : "Guardar Favorito";
+
+    // localStorage, donde se podra agregar o eliminar elementos
+    btnFavorito.onclick = function () {
+
+      if (existeStorage(idMeal)) {
+        eliminarfavorito(idMeal);
+        btnFavorito.textContent = "Guardar Favorito";
+        return;
+      }
+
+      agregarFavorito({
+        id: idMeal,
+        titulo: strMeal,
+        img: strMealThumb
+      });
+      btnFavorito.textContent = "Eliminar Favorito";
+    }
+
 
     const btnCerrarModal = document.createElement("BUTTON");
     btnCerrarModal.classList.add("btn", "btn-secondary", "col");
@@ -156,6 +171,23 @@ function iniciarApp() {
 
     // Muestra el modal donde se cargarán toda la información de la API
     modal.show();
+  }
+
+  function agregarFavorito(receta) {
+    const favoritos = JSON.parse(localStorage.getItem('favoritos')) ?? [];
+    localStorage.setItem('favoritos', JSON.stringify([...favoritos, receta]));
+  }
+
+  function eliminarfavorito(id) {
+    const favoritos = JSON.parse(localStorage.getItem('favoritos')) ?? [];
+    const nuevosFavoritos = favoritos.filter(favorito => favorito.id !== id);
+
+    localStorage.setItem("favoritos", JSON.stringify(nuevosFavoritos));
+  }
+
+  function existeStorage(id) {
+    const favoritos = JSON.parse(localStorage.getItem('favoritos')) ?? [];
+    return favoritos.some(favorito => favorito.id === id);
   }
 
   function limpiarHTML(selector) {
