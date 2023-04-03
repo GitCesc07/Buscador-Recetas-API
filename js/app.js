@@ -114,10 +114,45 @@ function iniciarApp() {
     <img class="img-fluid" src="${strMealThumb}" alt="receta ${strMeal}" />
     <h3 class="my-3"> Instrucciones </h3>
     <p>${strInstructions}</p>
+    <h3 class="my-3">Ingredientes y Cantidades</h3>
     `;
 
+    const listGroup = document.createElement("UL");
+    listGroup.classList.add("list-group");
 
     // Mostrar cantidades e ingredientes
+    for (let i = 1; i <= 20; i++) {
+      if (receta[`strIngredient${i}`]) {
+        const ingrediente = receta[`strIngredient${i}`];
+        const cantidad = receta[`strMeasure${i}`];
+
+        const ingredienteLi = document.createElement("LI");
+        ingredienteLi.classList.add("list-group-item");
+        ingredienteLi.textContent = `${ingrediente} - ${cantidad}`;
+
+        listGroup.appendChild(ingredienteLi);
+      }
+    }
+
+    modalBody.appendChild(listGroup);
+
+    const modalFooter = document.querySelector(".modal-footer");
+    limpiarHTML(modalFooter);
+
+    // Botones de cerrar y guardar favoritos
+    const btnFavorito = document.createElement("BUTTON");
+    btnFavorito.classList.add("btn", "btn-danger", "col");
+    btnFavorito.textContent = "Guardar favorito";
+
+    const btnCerrarModal = document.createElement("BUTTON");
+    btnCerrarModal.classList.add("btn", "btn-secondary", "col");
+    btnCerrarModal.textContent = "Cerrar";
+    btnCerrarModal.onclick = function () {
+      modal.hide();
+    }
+
+    modalFooter.appendChild(btnFavorito);
+    modalFooter.appendChild(btnCerrarModal);
 
     // Muestra el modal donde se cargarán toda la información de la API
     modal.show();
