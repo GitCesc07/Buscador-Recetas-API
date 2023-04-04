@@ -1,4 +1,5 @@
 ## Proyecto Buscador de recetas
 
-* Usando y consultando API
-* Usando LocalStorage
+---
+## Click go link:
+[Buscador de Recetas](https://recetas-comida.netlify.app/)
